@@ -57,7 +57,7 @@ beta_summ <- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Document
 ```{r, results='asis'}
 # Crear la tabla con knitr::kable en formato pipe
 library(knitr)
-tabla <- kable(beta_summ, format = "pipe", align = 'c')
+tabla <- kable(beta_summ, format = "markdown", align = 'c')
 
 # Crear un contenedor HTML con estilo inline para las barras de desplazamiento
 cat('<div style="max-height: 150px; overflow-y: auto; display: block;">')
