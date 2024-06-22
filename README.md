@@ -89,20 +89,20 @@ Están organizadas de esta manera que facilita la ejecución del código:
 </style>
 
 ``` r
+# Crear la tabla con knitr::kable en formato pipe
 library(knitr)
 ```
 
     ## Warning: package 'knitr' was built under R version 4.3.2
 
 ``` r
-# Generar la tabla en formato pipe
 tabla <- kable(beta_summ, format = "pipe", align = 'c')
 
-# Imprimir el contenedor HTML con la tabla
-cat('<div class="scrollable-table">')
+# Crear un contenedor HTML con estilo inline para las barras de desplazamiento
+cat('<div style="max-height: 150px; overflow-y: auto; display: block;">')
 ```
 
-<div class="scrollable-table">
+<div style="max-height: 150px; overflow-y: auto; display: block;">
 
 ``` r
 cat(tabla)

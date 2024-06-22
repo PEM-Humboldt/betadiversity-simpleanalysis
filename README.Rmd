@@ -55,12 +55,12 @@ beta_summ <- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Document
 ```
 
 ```{r, results='asis'}
+# Crear la tabla con knitr::kable en formato pipe
 library(knitr)
-# Generar la tabla en formato pipe
 tabla <- kable(beta_summ, format = "pipe", align = 'c')
 
-# Imprimir el contenedor HTML con la tabla
-cat('<div class="scrollable-table">')
+# Crear un contenedor HTML con estilo inline para las barras de desplazamiento
+cat('<div style="max-height: 150px; overflow-y: auto; display: block;">')
 cat(tabla)
 cat('</div>')
 ```
