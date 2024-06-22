@@ -96,7 +96,7 @@ library(knitr)
     ## Warning: package 'knitr' was built under R version 4.3.2
 
 ``` r
-tabla <- kable(beta_summ, format = "pipe", align = 'c')
+tabla <- kable(beta_summ, format = "markdown", align = 'c')
 
 # Crear un contenedor HTML con estilo inline para las barras de desplazamiento
 cat('<div style="max-height: 150px; overflow-y: auto; display: block;">')
