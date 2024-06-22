@@ -42,6 +42,7 @@ data_matrix <- reshape2::dcast(dataset_sp, as.formula( paste(input$site_col, "~"
 
 
 ## Análisis de diversidad beta ####
+# Lista de indices Beta a estimar (https://rdrr.io/rforge/vegan/man/betadiver.html)
 index_list<- c("w", "-1", "c", "wb", "r", "I", "e", "t", "me", "j", "sor", "m", "-2", "co", "cc", "g", "-3", "l", "19", "hk", "rlb", "sim", "gl", "z")
 
 beta_list<- pblapply(index_list,

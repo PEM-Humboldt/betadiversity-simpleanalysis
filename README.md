@@ -16,8 +16,20 @@ output:
 
 Flujo de trabajo – Análisis de diversidad Beta
 ================
-truetrue
+Este flujo de trabajo estima índices de diversidad beta para un área
+general y entre los sitios que la integran. Consiste en la carga y
+organización de datos para la estimación de estas métricas mediante la
+libreria
+[vegan](https://cran.r-project.org/web/packages/vegan/vegan.pdf) en R.
+La diversidad beta evalúa la variación en la composición de especies
+entre diferentes sitios dentro de un área, ofreciendo una perspectiva
+sobre la heterogeneidad ecológica y las diferencias en las comunidades
+biológicas a través del paisaje. Se estima comparando la composición de
+especies entre sitios, tomando en cuenta tanto las especies únicas
+presentes en un solo sitio como las especies compartidas entre múltiples
+sitios.
 
+## Tabla de contenido
 - <a href="#organizar-directorio-de-trabajo"
   id="toc-organizar-directorio-de-trabajo">Organizar directorio de
   trabajo</a>
@@ -42,19 +54,6 @@ truetrue
     id="toc-dendograma---similitud">Dendograma - Similitud</a>
   - <a href="#representación-espacial"
     id="toc-representación-espacial">Representación espacial</a>
-
-Este flujo de trabajo estima índices de diversidad beta para un área
-general y entre los sitios que la integran. Consiste en la carga y
-organización de datos para la estimación de estas métricas mediante la
-libreria
-[vegan](https://cran.r-project.org/web/packages/vegan/vegan.pdf) en R.
-La diversidad beta evalúa la variación en la composición de especies
-entre diferentes sitios dentro de un área, ofreciendo una perspectiva
-sobre la heterogeneidad ecológica y las diferencias en las comunidades
-biológicas a través del paisaje. Se estima comparando la composición de
-especies entre sitios, tomando en cuenta tanto las especies únicas
-presentes en un solo sitio como las especies compartidas entre múltiples
-sitios.
 
 ## Organizar directorio de trabajo
 
@@ -97,7 +96,7 @@ lapply(packagesNeed, library, character.only = TRUE)  # Carga las librerías nec
 
 El flujo de trabajo está diseñado para establecer el entorno de trabajo
 automáticamente a partir de la ubicación del código. Esto significa que
-tomará como “dir_work” la carpeta raiz donde se almacena el código
+tomará como `dir_work` la carpeta raiz donde se almacena el código
 “\~/scripts. De esta manera, se garantiza que la ejecución se realice
 bajo la misma organización descrita en el paso de [Organizar directorio
 de trabajo](#ID_seccion1).
@@ -113,7 +112,7 @@ Dado que el código está configurado para definir las entradas desde la
 carpeta input, en esta parte se debe definir una lista llamada input en
 la que se especifica el nombre de cada una de las entradas necesarias
 para su ejecución. Para este ejemplo, basta con usar file.path con
-referencia a “input_folder” y el nombre del archivo para definir su ruta
+referencia a `input_folder` y el nombre del archivo para definir su ruta
 y facilitar su carga posterior. No obstante, se podría definir cualquier
 ruta de la máquina local como carpeta input donde se almacenen las
 entradas, o hacer referencia a cada archivo directamente.
@@ -163,15 +162,15 @@ al. (2003](https://besjournals.onlinelibrary.wiley.com/doi/10.1046/j.1365-2656.
 para medir la diversidad beta con datos de presencia-ausencia. Sin
 embargo, se limita a diagramar para exploración los resultados para una
 sola opción definida por el usuario en la entrada beta_plot. Dichas
-opciones son: “j”, “w”, “-1”, “c”, “wb”, “r”, “I”, “e”, “t”, “me”,
-“sor”, “m”, “-2”, “co”, “cc”, “g”, “-3”, “l”, “19”, “hk”, “rlb”, “sim”,
-“gl”, “z”. Por defecto, se generan para “j”, que corresponde a
-diversidad beta Jaccard. Dependiendo del método escogido, se genera un
-dendrograma que muestra el agrupamiento jerárquico de los sitios basado
-en su similitud o disimilitud según el índice beta utilizado. Si se
-utiliza un spatial_dataset, también se puede representar espacialmente
-el índice. Las opciones para beta_plot son las mismas que las
-especificadas en el argumento method.
+opciones son:
+`"j", "w", "-1", "c", "wb", "r", "I", "e", "t", "me", "sor", "m", "-2", "co", "cc", "g", "-3", "l", "19", "hk", "rlb", "sim", "gl", "z"`.
+Por defecto, se generan para `"j"`, que corresponde a diversidad beta
+Jaccard. Dependiendo del método escogido, se genera un dendrograma que
+muestra el agrupamiento jerárquico de los sitios basado en su similitud
+o disimilitud según el índice beta utilizado. Si se utiliza un
+spatial_dataset, también se puede representar espacialmente el índice.
+Las opciones para beta_plot son las mismas que las especificadas en el
+argumento method.
 
 ## Organizacion de datos
 
@@ -194,6 +193,7 @@ data_matrix <- reshape2::dcast(dataset_sp, as.formula( paste(input$site_col, "~"
 
 ``` r
 ## Análisis de diversidad beta ####
+# Lista de indices Beta a estimar (https://rdrr.io/rforge/vegan/man/betadiver.html)
 index_list<- c("w", "-1", "c", "wb", "r", "I", "e", "t", "me", "j", "sor", "m", "-2", "co", "cc", "g", "-3", "l", "19", "hk", "rlb", "sim", "gl", "z")
 
 beta_list<- pblapply(index_list,
@@ -219,569 +219,33 @@ openxlsx::write.xlsx(beta_matrix_list, file.path(output, paste0("beta_matrix_lis
 openxlsx::write.xlsx(beta_summ, file.path(output, paste0("beta_summ", ".xlsx")))
 
 ### Ver tabla indices de diversidad beta ####
-print(beta_summ)
+print(head(beta_summ))
 ```
 
-<table style="width:30%; max-height:200px; overflow-x: scroll; overflow-y: scroll;">
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-w
-</th>
-<th style="text-align:right;">
--1
-</th>
-<th style="text-align:right;">
-c
-</th>
-<th style="text-align:right;">
-wb
-</th>
-<th style="text-align:right;">
-r
-</th>
-<th style="text-align:right;">
-I
-</th>
-<th style="text-align:right;">
-e
-</th>
-<th style="text-align:right;">
-t
-</th>
-<th style="text-align:right;">
-me
-</th>
-<th style="text-align:right;">
-j
-</th>
-<th style="text-align:right;">
-sor
-</th>
-<th style="text-align:right;">
-m
-</th>
-<th style="text-align:right;">
--2
-</th>
-<th style="text-align:right;">
-co
-</th>
-<th style="text-align:right;">
-cc
-</th>
-<th style="text-align:right;">
-g
-</th>
-<th style="text-align:right;">
--3
-</th>
-<th style="text-align:right;">
-l
-</th>
-<th style="text-align:right;">
-19
-</th>
-<th style="text-align:right;">
-hk
-</th>
-<th style="text-align:right;">
-rlb
-</th>
-<th style="text-align:right;">
-sim
-</th>
-<th style="text-align:right;">
-gl
-</th>
-<th style="text-align:right;">
-z
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Aeropuerto La Bastilla
-</td>
-<td style="text-align:right;">
-0.9463019
-</td>
-<td style="text-align:right;">
-0.9463019
-</td>
-<td style="text-align:right;">
-74.57407
-</td>
-<td style="text-align:right;">
-149.1481
-</td>
-<td style="text-align:right;">
-0.3360828
-</td>
-<td style="text-align:right;">
-0.3772688
-</td>
-<td style="text-align:right;">
-0.4802798
-</td>
-<td style="text-align:right;">
-0.9463019
-</td>
-<td style="text-align:right;">
-0.9463019
-</td>
-<td style="text-align:right;">
-0.0214074
-</td>
-<td style="text-align:right;">
-0.0413525
-</td>
-<td style="text-align:right;">
-152.2348
-</td>
-<td style="text-align:right;">
-0.2126985
-</td>
-<td style="text-align:right;">
-0.8835461
-</td>
-<td style="text-align:right;">
-0.9662469
-</td>
-<td style="text-align:right;">
-0.9662469
-</td>
-<td style="text-align:right;">
-0.1528801
-</td>
-<td style="text-align:right;">
-74.57407
-</td>
-<td style="text-align:right;">
-0.2271623
-</td>
-<td style="text-align:right;">
-0.9463019
-</td>
-<td style="text-align:right;">
-0.1762689
-</td>
-<td style="text-align:right;">
-0.8044778
-</td>
-<td style="text-align:right;">
-1.2922907
-</td>
-<td style="text-align:right;">
-0.9573051
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Algarrobo
-</td>
-<td style="text-align:right;">
-0.7251360
-</td>
-<td style="text-align:right;">
-0.7251360
-</td>
-<td style="text-align:right;">
-109.88889
-</td>
-<td style="text-align:right;">
-219.7778
-</td>
-<td style="text-align:right;">
-0.2641368
-</td>
-<td style="text-align:right;">
-0.3422801
-</td>
-<td style="text-align:right;">
-0.4184408
-</td>
-<td style="text-align:right;">
-0.7251360
-</td>
-<td style="text-align:right;">
-0.7251360
-</td>
-<td style="text-align:right;">
-0.1606498
-</td>
-<td style="text-align:right;">
-0.2625183
-</td>
-<td style="text-align:right;">
-256.8391
-</td>
-<td style="text-align:right;">
-0.2523132
-</td>
-<td style="text-align:right;">
-0.6574878
-</td>
-<td style="text-align:right;">
-0.8270045
-</td>
-<td style="text-align:right;">
-0.8270045
-</td>
-<td style="text-align:right;">
-0.1827861
-</td>
-<td style="text-align:right;">
-109.88889
-</td>
-<td style="text-align:right;">
-0.1972034
-</td>
-<td style="text-align:right;">
-0.7251360
-</td>
-<td style="text-align:right;">
-0.2665227
-</td>
-<td style="text-align:right;">
-0.5388012
-</td>
-<td style="text-align:right;">
-0.8384014
-</td>
-<td style="text-align:right;">
-0.7786310
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Alianza
-</td>
-<td style="text-align:right;">
-0.7144399
-</td>
-<td style="text-align:right;">
-0.7144399
-</td>
-<td style="text-align:right;">
-79.70370
-</td>
-<td style="text-align:right;">
-159.4074
-</td>
-<td style="text-align:right;">
-0.2555469
-</td>
-<td style="text-align:right;">
-0.3498796
-</td>
-<td style="text-align:right;">
-0.4275176
-</td>
-<td style="text-align:right;">
-0.7144399
-</td>
-<td style="text-align:right;">
-0.7144399
-</td>
-<td style="text-align:right;">
-0.1694952
-</td>
-<td style="text-align:right;">
-0.2732144
-</td>
-<td style="text-align:right;">
-186.6540
-</td>
-<td style="text-align:right;">
-0.2109754
-</td>
-<td style="text-align:right;">
-0.6509950
-</td>
-<td style="text-align:right;">
-0.8181591
-</td>
-<td style="text-align:right;">
-0.8181591
-</td>
-<td style="text-align:right;">
-0.1624409
-</td>
-<td style="text-align:right;">
-79.70370
-</td>
-<td style="text-align:right;">
-0.1928606
-</td>
-<td style="text-align:right;">
-0.7144399
-</td>
-<td style="text-align:right;">
-0.3730770
-</td>
-<td style="text-align:right;">
-0.5240721
-</td>
-<td style="text-align:right;">
-0.8782919
-</td>
-<td style="text-align:right;">
-0.7687300
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Banquetas
-</td>
-<td style="text-align:right;">
-0.8219202
-</td>
-<td style="text-align:right;">
-0.8219202
-</td>
-<td style="text-align:right;">
-144.83951
-</td>
-<td style="text-align:right;">
-289.6790
-</td>
-<td style="text-align:right;">
-0.3630813
-</td>
-<td style="text-align:right;">
-0.3940044
-</td>
-<td style="text-align:right;">
-0.5007330
-</td>
-<td style="text-align:right;">
-0.8219202
-</td>
-<td style="text-align:right;">
-0.8219202
-</td>
-<td style="text-align:right;">
-0.0937130
-</td>
-<td style="text-align:right;">
-0.1657341
-</td>
-<td style="text-align:right;">
-318.9779
-</td>
-<td style="text-align:right;">
-0.3206583
-</td>
-<td style="text-align:right;">
-0.7711017
-</td>
-<td style="text-align:right;">
-0.8939413
-</td>
-<td style="text-align:right;">
-0.8939413
-</td>
-<td style="text-align:right;">
-0.2158049
-</td>
-<td style="text-align:right;">
-144.83951
-</td>
-<td style="text-align:right;">
-0.2459493
-</td>
-<td style="text-align:right;">
-0.8219202
-</td>
-<td style="text-align:right;">
-0.1601402
-</td>
-<td style="text-align:right;">
-0.6870577
-</td>
-<td style="text-align:right;">
-0.8716456
-</td>
-<td style="text-align:right;">
-0.8606208
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Barbasco
-</td>
-<td style="text-align:right;">
-0.7249301
-</td>
-<td style="text-align:right;">
-0.7249301
-</td>
-<td style="text-align:right;">
-80.68519
-</td>
-<td style="text-align:right;">
-161.3704
-</td>
-<td style="text-align:right;">
-0.2666244
-</td>
-<td style="text-align:right;">
-0.3569803
-</td>
-<td style="text-align:right;">
-0.4378799
-</td>
-<td style="text-align:right;">
-0.7249301
-</td>
-<td style="text-align:right;">
-0.7249301
-</td>
-<td style="text-align:right;">
-0.1615558
-</td>
-<td style="text-align:right;">
-0.2627242
-</td>
-<td style="text-align:right;">
-187.8260
-</td>
-<td style="text-align:right;">
-0.2185498
-</td>
-<td style="text-align:right;">
-0.6615217
-</td>
-<td style="text-align:right;">
-0.8260985
-</td>
-<td style="text-align:right;">
-0.8260985
-</td>
-<td style="text-align:right;">
-0.1670231
-</td>
-<td style="text-align:right;">
-80.68519
-</td>
-<td style="text-align:right;">
-0.1995050
-</td>
-<td style="text-align:right;">
-0.7249301
-</td>
-<td style="text-align:right;">
-0.3575127
-</td>
-<td style="text-align:right;">
-0.5366837
-</td>
-<td style="text-align:right;">
-0.8798107
-</td>
-<td style="text-align:right;">
-0.7780095
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Belgrado
-</td>
-<td style="text-align:right;">
-0.6871911
-</td>
-<td style="text-align:right;">
-0.6871911
-</td>
-<td style="text-align:right;">
-106.96296
-</td>
-<td style="text-align:right;">
-213.9259
-</td>
-<td style="text-align:right;">
-0.2219763
-</td>
-<td style="text-align:right;">
-0.3117846
-</td>
-<td style="text-align:right;">
-0.3764101
-</td>
-<td style="text-align:right;">
-0.6871911
-</td>
-<td style="text-align:right;">
-0.6871911
-</td>
-<td style="text-align:right;">
-0.1930356
-</td>
-<td style="text-align:right;">
-0.3004632
-</td>
-<td style="text-align:right;">
-254.1603
-</td>
-<td style="text-align:right;">
-0.2211644
-</td>
-<td style="text-align:right;">
-0.6121804
-</td>
-<td style="text-align:right;">
-0.7946188
-</td>
-<td style="text-align:right;">
-0.7946188
-</td>
-<td style="text-align:right;">
-0.1615430
-</td>
-<td style="text-align:right;">
-106.96296
-</td>
-<td style="text-align:right;">
-0.1679522
-</td>
-<td style="text-align:right;">
-0.6871911
-</td>
-<td style="text-align:right;">
-0.3046610
-</td>
-<td style="text-align:right;">
-0.4795690
-</td>
-<td style="text-align:right;">
-0.8439009
-</td>
-<td style="text-align:right;">
-0.7429176
-</td>
-</tr>
-</tbody>
-</table>
+|                        |         w |        -1 |         c |       wb |         r |         I |         e |         t |        me |         j |       sor |        m |        -2 |        co |        cc |         g |        -3 |         l |        19 |        hk |       rlb |       sim |        gl |         z |
+|:-----------------------|----------:|----------:|----------:|---------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|---------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+| Aeropuerto La Bastilla | 0.9463019 | 0.9463019 |  74.57407 | 149.1481 | 0.3360828 | 0.3772688 | 0.4802798 | 0.9463019 | 0.9463019 | 0.0214074 | 0.0413525 | 152.2348 | 0.2126985 | 0.8835461 | 0.9662469 | 0.9662469 | 0.1528801 |  74.57407 | 0.2271623 | 0.9463019 | 0.1762689 | 0.8044778 | 1.2922907 | 0.9573051 |
+| Algarrobo              | 0.7251360 | 0.7251360 | 109.88889 | 219.7778 | 0.2641368 | 0.3422801 | 0.4184408 | 0.7251360 | 0.7251360 | 0.1606498 | 0.2625183 | 256.8391 | 0.2523132 | 0.6574878 | 0.8270045 | 0.8270045 | 0.1827861 | 109.88889 | 0.1972034 | 0.7251360 | 0.2665227 | 0.5388012 | 0.8384014 | 0.7786310 |
+| Alianza                | 0.7144399 | 0.7144399 |  79.70370 | 159.4074 | 0.2555469 | 0.3498796 | 0.4275176 | 0.7144399 | 0.7144399 | 0.1694952 | 0.2732144 | 186.6540 | 0.2109754 | 0.6509950 | 0.8181591 | 0.8181591 | 0.1624409 |  79.70370 | 0.1928606 | 0.7144399 | 0.3730770 | 0.5240721 | 0.8782919 | 0.7687300 |
+| Banquetas              | 0.8219202 | 0.8219202 | 144.83951 | 289.6790 | 0.3630813 | 0.3940044 | 0.5007330 | 0.8219202 | 0.8219202 | 0.0937130 | 0.1657341 | 318.9779 | 0.3206583 | 0.7711017 | 0.8939413 | 0.8939413 | 0.2158049 | 144.83951 | 0.2459493 | 0.8219202 | 0.1601402 | 0.6870577 | 0.8716456 | 0.8606208 |
+| Barbasco               | 0.7249301 | 0.7249301 |  80.68519 | 161.3704 | 0.2666244 | 0.3569803 | 0.4378799 | 0.7249301 | 0.7249301 | 0.1615558 | 0.2627242 | 187.8260 | 0.2185498 | 0.6615217 | 0.8260985 | 0.8260985 | 0.1670231 |  80.68519 | 0.1995050 | 0.7249301 | 0.3575127 | 0.5366837 | 0.8798107 | 0.7780095 |
+| Belgrado               | 0.6871911 | 0.6871911 | 106.96296 | 213.9259 | 0.2219763 | 0.3117846 | 0.3764101 | 0.6871911 | 0.6871911 | 0.1930356 | 0.3004632 | 254.1603 | 0.2211644 | 0.6121804 | 0.7946188 | 0.7946188 | 0.1615430 | 106.96296 | 0.1679522 | 0.6871911 | 0.3046610 | 0.4795690 | 0.8439009 | 0.7429176 |
 
 Los resultados son una tabla de datos donde la primera columna
 representa el sitio analizado, y las columnas restantes contienen las
 estimaciones de diversidad beta media con todos los indicadores
 descritos para cada uno de los sitios. Estos resultados se almacenan
-como “beta_results.xlsx” en la carpeta de salida definida. De la misma
+como `beta_results.xlsx` en la carpeta de salida definida. De la misma
 manera, las matrices de similitud de cada índice se exportaron en un
-archivo “beta_matrix_list.xlsx”, en el que cada hoja corresponde a cada
+archivo `beta_matrix_list.xlsx`, en el que cada hoja corresponde a cada
 uno de los índices.
 
 ## Figuras de diversidad beta
 
 Se generaron figuras para análisis exploratorios de los resultados del
-“beta_plot” definido. Primero, se creó un dendrograma de similitud
+`beta_plot` definido. Primero, se creó un dendrograma de similitud
 basado en el índice beta seleccionado. Segundo, cuando se dispuso de un
-spatial_dataset, se realizó una representación espacial de los
+\``spatial_dataset`, se realizó una representación espacial de los
 resultados.
 
 ### Dendograma - Similitud
@@ -833,9 +297,9 @@ parecidos entre ellos.
 
 ### Representación espacial
 
-Cuando se define un spatial_dataset como entrada, se genera un mapa que
-representa espacialmente la diversidad beta por sitio. Este
-spatial_dataset debe tener una columna con el mismo atributo espacial
+Cuando se define un `spatial_dataset` como entrada, se genera un mapa
+que representa espacialmente la diversidad beta por sitio. Este
+`spatial_dataset` debe tener una columna con el mismo atributo espacial
 que el dataset, lo cual permite hacer un join entre los resultados para
 crear un diagrama de la unidad espacial que refleje el indicador beta
 estimado para esa unidad.

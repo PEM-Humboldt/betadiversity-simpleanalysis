@@ -50,7 +50,7 @@ lapply(packagesNeed, library, character.only = TRUE)  # Carga las librerías nec
 ```
 
 ## Establecer entorno de trabajo
-El flujo de trabajo está diseñado para establecer el entorno de trabajo automáticamente a partir de la ubicación del código. Esto significa que tomará como "dir_work" la carpeta raiz donde se almacena el código “~/scripts. De esta manera, se garantiza que la ejecución se realice bajo la misma organización descrita en el paso de [Organizar directorio de trabajo](#ID_seccion1).
+El flujo de trabajo está diseñado para establecer el entorno de trabajo automáticamente a partir de la ubicación del código. Esto significa que tomará como `dir_work` la carpeta raiz donde se almacena el código “~/scripts. De esta manera, se garantiza que la ejecución se realice bajo la misma organización descrita en el paso de [Organizar directorio de trabajo](#ID_seccion1).
 
 ```{r,  eval=F, echo=T, results='hide', warning= F, message = F}
 ## Establecer entorno de trabajo ####
@@ -59,7 +59,7 @@ dir_work <- this.path::this.path() %>% dirname()  # Establece el directorio de t
 
 
 ### Definir inputs y direccion output
-Dado que el código está configurado para definir las entradas desde la carpeta input, en esta parte se debe definir una lista llamada input en la que se especifica el nombre de cada una de las entradas necesarias para su ejecución. Para este ejemplo, basta con usar file.path con referencia a "input_folder" y el nombre del archivo para definir su ruta y facilitar su carga posterior. No obstante, se podría definir cualquier ruta de la máquina local como carpeta input donde se almacenen las entradas, o hacer referencia a cada archivo directamente.
+Dado que el código está configurado para definir las entradas desde la carpeta input, en esta parte se debe definir una lista llamada input en la que se especifica el nombre de cada una de las entradas necesarias para su ejecución. Para este ejemplo, basta con usar file.path con referencia a `input_folder` y el nombre del archivo para definir su ruta y facilitar su carga posterior. No obstante, se podría definir cualquier ruta de la máquina local como carpeta input donde se almacenen las entradas, o hacer referencia a cada archivo directamente.
 
 Asimismo, el código genera una carpeta output donde se almacenarán los resultados del análisis. La ruta de esa carpeta se almacena por defecto en el mismo directorio donde se encuentra el código.
 
@@ -86,7 +86,7 @@ input <- list(
 La lista de entradas incluye la ruta completa al archivo que contiene los datos de especies por sitio, el nombre de la columna en ´dataset´ que contiene los nombres de las especies, y el nombre de la columna en ´dataset´ que hace referencia a los sitios como unidad espacial de analisis. Este dataset se utilizará para realizar los análisis de diversidad beta, basándose en la definición de sp_col y site_col. Además, se especifica un argumento opcional hacia la ruta de un archivo espacial referente a las geometrias espaciales de los sitios definidos. Este archivo  se utilizará para espacializar y diagramar los resultados del análisis y debe tener una columna con el mismo nombre que site_col para permitir la unión con los resultados del análisis. Si no se dispone del archivo shapefile, este parámetro puede establecerse como NULL.
 
 
-El código estima los 24 estimadores de diversidad beta detallados en el argumento method de [vegan::betadiver](https://rdrr.io/rforge/vegan/man/betadiver.html), referentes a [Koleff et al. (2003](https://besjournals.onlinelibrary.wiley.com/doi/10.1046/j.1365-2656.2003.00710.x) para medir la diversidad beta con datos de presencia-ausencia. Sin embargo, se limita a diagramar para exploración los resultados para una sola opción definida por el usuario en la entrada beta_plot. Dichas opciones son: "j", "w", "-1", "c", "wb", "r", "I", "e", "t", "me", "sor", "m", "-2", "co", "cc", "g", "-3", "l", "19", "hk", "rlb", "sim", "gl", "z". Por defecto, se generan para "j", que corresponde a diversidad beta Jaccard. Dependiendo del método escogido, se genera un dendrograma que muestra el agrupamiento jerárquico de los sitios basado en su similitud o disimilitud según el índice beta utilizado. Si se utiliza un spatial_dataset, también se puede representar espacialmente el índice. Las opciones para beta_plot son las mismas que las especificadas en el argumento method.
+El código estima los 24 estimadores de diversidad beta detallados en el argumento method de [vegan::betadiver](https://rdrr.io/rforge/vegan/man/betadiver.html), referentes a [Koleff et al. (2003](https://besjournals.onlinelibrary.wiley.com/doi/10.1046/j.1365-2656.2003.00710.x) para medir la diversidad beta con datos de presencia-ausencia. Sin embargo, se limita a diagramar para exploración los resultados para una sola opción definida por el usuario en la entrada beta_plot. Dichas opciones son: `"j", "w", "-1", "c", "wb", "r", "I", "e", "t", "me", "sor", "m", "-2", "co", "cc", "g", "-3", "l", "19", "hk", "rlb", "sim", "gl", "z"`. Por defecto, se generan para `"j"`, que corresponde a diversidad beta Jaccard. Dependiendo del método escogido, se genera un dendrograma que muestra el agrupamiento jerárquico de los sitios basado en su similitud o disimilitud según el índice beta utilizado. Si se utiliza un spatial_dataset, también se puede representar espacialmente el índice. Las opciones para beta_plot son las mismas que las especificadas en el argumento method.
 
 ## Organizacion de datos ####
 Los datos deben organizarse en una matriz de sitios (filas) por especies (columnas). El código carga los datos y genera la matriz a partir de las entradas site_col correspondiente a sitios como filas, y sp_col correspondientes a especies como columnas.
@@ -104,6 +104,7 @@ data_matrix <- reshape2::dcast(dataset_sp, as.formula( paste(input$site_col, "~"
 ## Análisis de diversidad beta
 ```{r,  eval=F, echo=T, results='hide', warning= F, message = F}
 ## Análisis de diversidad beta ####
+# Lista de indices Beta a estimar (https://rdrr.io/rforge/vegan/man/betadiver.html)
 index_list<- c("w", "-1", "c", "wb", "r", "I", "e", "t", "me", "j", "sor", "m", "-2", "co", "cc", "g", "-3", "l", "19", "hk", "rlb", "sim", "gl", "z")
 
 beta_list<- pblapply(index_list,
@@ -129,23 +130,22 @@ openxlsx::write.xlsx(beta_matrix_list, file.path(output, paste0("beta_matrix_lis
 openxlsx::write.xlsx(beta_summ, file.path(output, paste0("beta_summ", ".xlsx")))
 
 ### Ver tabla indices de diversidad beta ####
-print(beta_summ)
+print(head(beta_summ))
 ```
 
 
 
 ```{r,  eval= T, echo=F, warning= F, message = F, attr.output='style="max-height: 10px;"'}
-library(magrittr)
 beta_summ<- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Documents/beta_summ.rds") , "site") 
-knitr::kable(head(beta_summ), format = "html", table.attr = "style='width:30%; max-height:200px; overflow-x: scroll; overflow-y: scroll;'")
+knitr::kable(head(beta_summ))
 ```
 
 
 
-Los resultados son una tabla de datos donde la primera columna representa el sitio analizado, y las columnas restantes contienen las estimaciones de diversidad beta media con todos los indicadores descritos para cada uno de los sitios. Estos resultados se almacenan como "beta_results.xlsx" en la carpeta de salida definida. De la misma manera, las matrices de similitud de cada índice se exportaron en un archivo "beta_matrix_list.xlsx", en el que cada hoja corresponde a cada uno de los índices.
+Los resultados son una tabla de datos donde la primera columna representa el sitio analizado, y las columnas restantes contienen las estimaciones de diversidad beta media con todos los indicadores descritos para cada uno de los sitios. Estos resultados se almacenan como `beta_results.xlsx` en la carpeta de salida definida. De la misma manera, las matrices de similitud de cada índice se exportaron en un archivo `beta_matrix_list.xlsx`, en el que cada hoja corresponde a cada uno de los índices.
 
 ## Figuras de diversidad beta
-Se generaron figuras para análisis exploratorios de los resultados del "beta_plot" definido. Primero, se creó un dendrograma de similitud basado en el índice beta seleccionado. Segundo, cuando se dispuso de un spatial_dataset, se realizó una representación espacial de los resultados.
+Se generaron figuras para análisis exploratorios de los resultados del `beta_plot` definido. Primero, se creó un dendrograma de similitud basado en el índice beta seleccionado. Segundo, cuando se dispuso de un ``spatial_dataset`, se realizó una representación espacial de los resultados.
 
 
 ### Dendograma - Similitud ####
@@ -189,7 +189,7 @@ print(dendroBeta)
 El dendrograma resultante muestra la similitud entre sitios basada en la disimilaridad calculada a partir de la diversidad beta, lo cual cuantifica las diferencias entre sitios en términos de composición de especies. Como resultado, el dendrograma organiza los sitios en una estructura jerárquica donde las ramas indican la similitud entre grupos de sitios, proporcionando una representación clara de cuáles son más parecidos entre ellos.
 
 ### Representación espacial ####
-Cuando se define un spatial_dataset como entrada, se genera un mapa que representa espacialmente la diversidad beta por sitio. Este spatial_dataset debe tener una columna con el mismo atributo espacial que el dataset, lo cual permite hacer un join entre los resultados para crear un diagrama de la unidad espacial que refleje el indicador beta estimado para esa unidad.
+Cuando se define un `spatial_dataset` como entrada, se genera un mapa que representa espacialmente la diversidad beta por sitio. Este `spatial_dataset` debe tener una columna con el mismo atributo espacial que el dataset, lo cual permite hacer un join entre los resultados para crear un diagrama de la unidad espacial que refleje el indicador beta estimado para esa unidad.
 
 ```{r,  eval=F, echo=T, results='hide', warning= F, message = F}
 ### Representación espacial ####
