@@ -75,6 +75,29 @@ Están organizadas de esta manera que facilita la ejecución del código:
     │     
     └-output
 
+<div style="max-height: 200px; overflow-y: auto;">
+
+``` markdown
+| Columna 1 | Columna 2 | Columna 3 |
+|-----------|-----------|-----------|
+| Dato 1    | Dato 2    | Dato 3    |
+| Dato 4    | Dato 5    | Dato 6    |
+| Dato 7    | Dato 8    | Dato 9    |
+| Dato 10   | Dato 11   | Dato 12   |
+| Dato 13   | Dato 14   | Dato 15   |
+| Dato 16   | Dato 17   | Dato 18   |
+| Dato 19   | Dato 20   | Dato 21   |
+| Dato 22   | Dato 23   | Dato 24   |
+| Dato 25   | Dato 26   | Dato 27   |
+| Dato 28   | Dato 29   | Dato 30   |
+| Dato 31   | Dato 32   | Dato 33   |
+| Dato 34   | Dato 35   | Dato 36   |
+| Dato 37   | Dato 38   | Dato 39   |
+| Dato 40   | Dato 41   | Dato 42   |
+```
+
+</div>
+
 ## Establecer parámetros de sesión
 
 ### Cargar librerias/paquetes necesarios para el análisis
