@@ -34,7 +34,36 @@ script
 ```
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.table.format = "markdown")
+```
 
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+library(magrittr)
+beta_summ <- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Documents/beta_summ.rds"), "site")
+```
+
+## Ejemplo de tabla con barras de desplazamiento vertical
+
+```{css, echo=FALSE}
+.scrollable-table {
+  max-height: 150px;
+  overflow-y: auto;
+  display: block;
+}
+```
+
+```{r, results='asis'}
+library(knitr)
+# Generar la tabla en formato pipe
+tabla <- kable(beta_summ, format = "pipe", align = 'c')
+
+# Imprimir el contenedor HTML con la tabla
+cat('<div class="scrollable-table">')
+cat(tabla)
+cat('</div>')
+```
 
 
 ## Establecer parámetros de sesión
@@ -138,10 +167,10 @@ print(beta_summ)
 
 
 
-```{r,  eval= T, echo=F, warning= F, message = F}
+```{r,  eval= T, echo=F, warning= F, message = F, attr.output='style="max-height: 10px;"'}
 library(magrittr)
 beta_summ<- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Documents/beta_summ.rds") , "site") 
-knitr::kable(beta_summ, format = "html", table.attr = "style='width:100%; height:500px; overflow-x: scroll; overflow-y: scroll;'")
+knitr::kable(beta_summ, format = "pipe", table.attr = "max-height: 150px; overflow-y: auto;display: block;'") 
 ```
 
 
