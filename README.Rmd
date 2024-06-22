@@ -33,39 +33,6 @@ script
 └-output
 ```
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-options(knitr.table.format = "markdown")
-```
-
-```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-library(magrittr)
-beta_summ <- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Documents/beta_summ.rds"), "site")
-```
-
-## Ejemplo de tabla con barras de desplazamiento vertical
-
-```{css, echo=FALSE}
-.scrollable-table {
-  max-height: 150px;
-  overflow-y: auto;
-  display: block;
-}
-```
-
-```{r, results='asis'}
-# Crear la tabla con knitr::kable en formato pipe
-library(knitr)
-tabla <- kable(beta_summ, format = "markdown", align = 'c')
-
-# Crear un contenedor HTML con estilo inline para las barras de desplazamiento
-cat('<div style="max-height: 150px; overflow-y: auto; display: block;">')
-cat(tabla)
-cat('</div>')
-```
-
-
 ## Establecer parámetros de sesión
 ### Cargar librerias/paquetes necesarios para el análisis
 ```{r,  eval=F, echo=T, results='hide', warning= F, message = F}
@@ -170,7 +137,7 @@ print(beta_summ)
 ```{r,  eval= T, echo=F, warning= F, message = F, attr.output='style="max-height: 10px;"'}
 library(magrittr)
 beta_summ<- tibble::column_to_rownames(readRDS("C:/Users/victor.rincon/Documents/beta_summ.rds") , "site") 
-knitr::kable(beta_summ, format = "pipe", table.attr = "max-height: 150px; overflow-y: auto;display: block;'") 
+knitr::kable(beta_summ, format = "html", table.attr = "style='width:30%; max-height:200px; overflow-x: scroll; overflow-y: scroll;'")
 ```
 
 
